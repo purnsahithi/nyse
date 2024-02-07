@@ -1,0 +1,20 @@
+Joins performed by Mapper are called as Map-side Joins. Joins performed by Reducer can be treated as Reduce-side joins.
+
+Map side Join in basically joining two dataset based on common column, in map phase only.
+
+Map-side join helps in minimizing the cost that is incurred for sorting and merging in the shuffle and reduce stages.
+Map-side join also helps in improving the performance of the task by decreasing the time to finish the task.
+For initiating map side join in Hive:  you need to mention /*+ MAPJOIN(u_user) */
+Default will take as reduce side join.
+
+A. Map side join
+================
+select /*+ MAPJOIN(nysedaily) */ a.stock_symbol, a.stock_price_close, b.dividends,b.divstock_date from nysedaily a join nysedividends b on a.stock_symbol=b.divstock_symbol AND a.stock_date=b.divstock_date where a.stock_price_close>=20;
+
+The above query took 13.498 seconds to complete.
+
+B. Reduce side join
+===================
+select a.stock_symbol, a.stock_price_close, b.dividends,b.divstock_date from nysedaily a join nysedividends b on a.stock_symbol=b.divstock_symbol AND a.stock_date=b.divstock_date where a.stock_price_close>=20;
+
+The above query took 14.537 seconds to complete.
